@@ -185,6 +185,16 @@ void LCD_displayString(uint8_t* kalam)
     }
 }
 
+void LCD_gotoRowColumn(uint8_t line, uint8_t digit)
+{
+
+       if(line== FirstLine)
+           LCD_sendCommand(FirstLineADD + digit);
+       else if(line == SecondLine)
+           LCD_sendCommand(SecondLineADD + digit);
+       //SysCtlDelay(15000);
+       vTaskDelay(5);
+}
 
 
 

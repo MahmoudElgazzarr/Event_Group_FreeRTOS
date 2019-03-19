@@ -5,13 +5,15 @@
 
 
 
-
+#define FirstLine 0
+#define SecondLine 1
+#define FirstLineADD  0x80
+#define SecondLineADD 0xC0
 
 void LCD_init(void);
 void LCD_sendCommand(uint8_t cmd);
 void LCD_displayChar(uint8_t c);
 void LCD_displayString(uint8_t* kalam);
-void LCD_displayStringRowColumn(uint8_t ROW, uint8_t COL, uint8_t* kalam);
 void LCD_clear();
 void LCD_gotoRowColumn(uint8_t ROW,uint8_t COL);
 void LCD_AllowSpecialCharacters(void);

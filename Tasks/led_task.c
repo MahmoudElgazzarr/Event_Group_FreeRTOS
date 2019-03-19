@@ -1,7 +1,4 @@
 
-
-
-
 #include <FreeRTOS.h>
 #include <stdint.h>
 #include "task.h"
@@ -14,8 +11,8 @@ void LED_Task()
     static uint8_t ulValReceived;
     while(1)
     {
-      xQueueReceive( xQueue1, &ulValReceived, 5 );
-    if( ulValReceived == 1 )
+      xQueueReceive( LED_Queue, &ulValReceived, 5 );
+    if( (ulValReceived == 2) || (ulValReceived == 1) )
     {
         led1_on();
     }
@@ -23,7 +20,7 @@ void LED_Task()
     {
         led1_off();
     }
-    vTaskDelay(50);
+    vTaskDelay(10);
     }
 }
 void LEDS_Task_init()
