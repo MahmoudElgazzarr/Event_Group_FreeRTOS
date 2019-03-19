@@ -35,9 +35,5 @@ extern uint32_t LEDTaskInit(void);
 
 void LEDS_Task_init();
 void LED_Task();
-void LED1_Blink();
-void LED2_Blink();
-void LED3_Blink();
-
 
 #endif // __LED_TASK_H__

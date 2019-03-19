@@ -29,6 +29,8 @@ void Switch_init()
     /*Wait while Peripheral ready*/
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))
         {}
+    HWREG(GPIO_PORTF_BASE+GPIO_O_LOCK) = GPIO_LOCK_KEY;
+        HWREG(GPIO_PORTF_BASE+GPIO_O_CR) |= 0x01;
     /*Make Pin 4 and 0 As Input */
     GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4);
     GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_0);
