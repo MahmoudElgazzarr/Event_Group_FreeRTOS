@@ -21,12 +21,13 @@ void Read_Button0_Task(void)
     {
         if (Switch0_Read() == 1)
         {
-            Button0_FLAG = 2;
-            xQueueOverwrite( xQueue1, &Button0_FLAG );
+            Button0_FLAG = 1;
+            xQueueSendToBack( xQueue1,&Button0_FLAG,5);
         }
         else
         {
             Button0_FLAG = 0;
+            xQueueSendToBack( xQueue1,&Button0_FLAG,5);
         }
         vTaskDelay(50);
     }
@@ -38,11 +39,12 @@ void Read_Button1_Task(void)
         if (Switch1_Read() == 1)
         {
             Button1_FLAG = 1;
-            xQueueOverwrite( xQueue1 , &Button1_FLAG);
+            //xQueueSend( xQueue1,&Button1_FLAG,5);
         }
         else
         {
             Button1_FLAG = 0;
+            //xQueueSendToBack( xQueue1,&Button1_FLAG,5);
         }
         vTaskDelay(50);
     }
@@ -52,7 +54,7 @@ void Switch_init_Task(void)
     while(1)
     {
         Switch_init();
-        xQueue1 = xQueueCreate( 10, sizeof( uint8_t ) );
+        xQueue1 = xQueueCreate( 2 , sizeof( uint8_t) );
         vTaskSuspend(NULL);
     }
 }

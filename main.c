@@ -14,6 +14,7 @@
 #include "Buzzer_Task.h"
 #include "led_task.h"
 #include "Button_Task.h"
+#include "LCD_Task.h"
 
 #ifdef DEBUG
 void
@@ -43,7 +44,9 @@ int main(void)
     //ROM_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
                        //SYSCTL_OSC_MAIN);
     /*Create init Task For Switch*/
-    xTaskCreate(Switch_init_Task, (const portCHAR *)"Buzzer_Init", 128, NULL, 14 , NULL);
+    xTaskCreate(Switch_init_Task, (const portCHAR *)"switch_Init", 128, NULL, 14 , NULL);
+    /*Create init Task For LCD*/
+    xTaskCreate(init_LCD_Task, (const portCHAR *)"LCD_Init", 128, NULL, 16 , NULL);
     /*Create Init Task For Led*/
     xTaskCreate(LEDS_Task_init, (const portCHAR *)"LED_Init", 128, NULL, 15 , NULL);
 
@@ -52,10 +55,13 @@ int main(void)
     xTaskCreate(Buzzer_Task, (const portCHAR *)"Buzzer", 50, NULL, 6 , NULL);
 
 
-     /*add Task 1 for led1*/
+     /*add Task 1 for led*/
      xTaskCreate(LED_Task, (const portCHAR *)"LED1", 50, NULL, 3 , NULL);
      /*Create a Task For The Button*/
-     xTaskCreate(Read_Button_Task, (const portCHAR *)"Buzzer_Init", 128, NULL, 5 , NULL);
+     xTaskCreate(Read_Button0_Task, (const portCHAR *)"Read_Button0", 128, NULL, 5 , NULL);
+     xTaskCreate(Read_Button1_Task, (const portCHAR *)"Read_Button1", 128, NULL, 6 , NULL);
+     /*Create Task For LCD*/
+     xTaskCreate(LCD_Display_Task, (const portCHAR *)"LCD_APP", 128, NULL, 7 , NULL);
      vTaskStartScheduler();
      while(1)
      {

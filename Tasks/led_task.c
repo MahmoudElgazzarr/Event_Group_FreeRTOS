@@ -11,22 +11,17 @@
 
 void LED_Task()
 {
-    uint8_t ulValReceived;
+    static uint8_t ulValReceived;
     while(1)
     {
-      xQueueReceive( xQueue1, &ulValReceived, 0 );
-    if( Button0_FLAG == 1 || ulValReceived == 2 )
+      xQueueReceive( xQueue1, &ulValReceived, 5 );
+    if( ulValReceived == 1 )
     {
         led1_on();
-    }
-    else if (Button1_FLAG == 1)
-    {
-        led2_on();
     }
     else
     {
         led1_off();
-        led2_off();
     }
     vTaskDelay(50);
     }
