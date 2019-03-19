@@ -11,6 +11,7 @@
 
 void Switch_init();
 uint8_t Switch0_Read(void);
+uint8_t Switch1_Read(void);
 
 
 #endif /* HEADERS_SWITCH_DRIVER_H_ */
