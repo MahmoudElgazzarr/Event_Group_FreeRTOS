@@ -8,8 +8,10 @@
 #ifndef INCLUDE_BUTTON_TASK_H_
 #define INCLUDE_BUTTON_TASK_H_
 
-extern volatile uint8_t Button_FLAG;
-void Read_Button_Task(void);
+extern volatile uint8_t Button0_FLAG;
+extern volatile uint8_t Button1_FLAG;
+void Read_Button0_Task(void);
+void Read_Button1_Task(void);
 void Switch_init_Task(void);
 
 #endif /* INCLUDE_BUTTON_TASK_H_ */

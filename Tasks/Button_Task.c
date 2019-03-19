@@ -9,24 +9,38 @@
 #include "Switch_Driver.h"
 #include "Button_Task.h"
 
-volatile uint8_t Button_FLAG = 0;
-
-void Read_Button_Task(void)
+volatile uint8_t Button0_FLAG = 0;
+volatile uint8_t Button1_FLAG = 0;
+void Read_Button0_Task(void)
 {
     while(1)
     {
         if (Switch0_Read() == 1)
         {
-            Button_FLAG = 1;
+            Button0_FLAG = 1;
         }
         else
         {
-            Button_FLAG = 0;
+            Button0_FLAG = 0;
         }
         vTaskDelay(50);
     }
 }
-
+void Read_Button1_Task(void)
+{
+    while(1)
+    {
+        if (Switch1_Read() == 1)
+        {
+            Button1_FLAG = 1;
+        }
+        else
+        {
+            Button1_FLAG = 0;
+        }
+        vTaskDelay(50);
+    }
+}
 void Switch_init_Task(void)
 {
     while(1)

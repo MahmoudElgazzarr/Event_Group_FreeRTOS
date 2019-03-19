@@ -9,18 +9,17 @@
 #include "led_task.h"
 #include "Button_Task.h"
 
-
-
-
-
-
 void LED_Task()
 {
     while(1)
     {
-    if(Button_FLAG == 1)
+    if( Button0_FLAG == 1)
     {
         led1_on();
+    }
+    else if (Button1_FLAG == 1)
+    {
+        led2_on();
     }
     else
     {
