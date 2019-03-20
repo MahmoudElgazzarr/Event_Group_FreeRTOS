@@ -6,10 +6,13 @@
  */
 #include "FreeRTOS.h"
 #include "Task.h"
-#include "queue.h"
+#include "event_groups.h"
 #include "Switch_Driver.h"
 #include "Button_Task.h"
 
+
+EventGroupHandle_t Buttons_EventGroup;
+EventBits_t uxBits;
 
 volatile uint8_t Button0_FLAG = 0;
 volatile uint8_t Button1_FLAG = 0;
@@ -20,44 +23,38 @@ volatile static uint8_t debounce_button1 = 0;
 //static uint8_t Button0_State = 0;
 static uint8_t Button1_State = 0;
 
-//static uint8_t previous0_State = 0;
-static uint8_t previous1_State = 0;
-
-QueueHandle_t LED_Queue;
-QueueHandle_t LCD_Queue;
+/*static uint8_t previous1_State = 0;*/
 
 void Read_Button0_Task(void)
 {
     uint8_t Button0_State = 0;
-    uint8_t previous0_State = 0;
+    /*uint8_t previous0_State = 0;*/
     while(1)
     {
-        Button0_State = Switch0_Read();
-        if (Button0_State && !previous0_State )
+        Button0_State = debounce_button0;
+        /*if (Button0_State && !previous0_State )*/
+        if (Button0_State == 5)
         {
-            Button0_FLAG = 1;
-            xQueueSend( LED_Queue ,&Button0_FLAG,5);
-            xQueueSend( LCD_Queue ,&Button0_FLAG,5);
+            /* Set bit 0 in xEventGroup. */
+              uxBits = xEventGroupSetBits(Buttons_EventGroup ,BIT_0);/* The bits being set. */
         }
-        previous0_State = Button0_State;
 
-        vTaskDelay(20);
+        vTaskDelay(25);
     }
 }
 void Read_Button1_Task(void)
 {
     while(1)
     {
-        Button1_State = Switch1_Read();
-        if (Button1_State && !previous1_State)
+        Button1_State = debounce_button1;
+        /*if (Button1_State && !previous1_State)*/
+        if (Button1_State == 5)
         {
-            Button1_FLAG = 2;
-            xQueueSend( LED_Queue ,&Button1_FLAG , 5);
-            xQueueSend( LCD_Queue ,&Button1_FLAG , 5);
-
+            /* Set bit 4 in xEventGroup. */
+              uxBits = xEventGroupSetBits(Buttons_EventGroup ,BIT_4);/* The bits being set. */
         }
-        previous1_State = Button1_State;
-        vTaskDelay(50);
+        /*previous1_State = Button1_State;*/
+        vTaskDelay(25);
     }
 }
 void debounce_Task(void)
@@ -110,7 +107,7 @@ void debounce_Task(void)
                        debounce_button0--;
                    }
                }
-        vTaskDelay(20);
+        vTaskDelay(5);
     }
 }
 void Switch_init_Task(void)

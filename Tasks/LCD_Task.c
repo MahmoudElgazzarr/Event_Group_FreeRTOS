@@ -12,8 +12,9 @@
 #include "Button_Task.h"
 
 
-static uint8_t *Kalam1 = "Button 1 :";
-static uint8_t *Kalam2 = "Button 2 :";
+static uint8_t *Kalam1 = "Button 0 Pressed :";
+static uint8_t *Kalam2 = "Button 1 Pressed :";
+static uint8_t *Kalam3 = "Welcome";
 
 void init_LCD_Task()
 {
@@ -21,57 +22,39 @@ void init_LCD_Task()
     {
     LCD_init();
     LCD_gotoRowColumn(FirstLine ,0);
-    LCD_displayString(Kalam1);
-    LCD_gotoRowColumn(SecondLine ,0);
-    LCD_displayString(Kalam2);
+    LCD_displayString(Kalam3);
     vTaskSuspend(NULL);
     }
 }
 
 void LCD_Display_Task()
 {
-    static uint8_t count1=0;
-    static uint8_t count2=0;
-    static uint8_t Value_Received_Button;
+    /* Wait a maximum of 100ms for either bit 0 or bit 4 to be set within
+              the event group.  Clear the bits before exiting. */
+              uxBits = xEventGroupWaitBits(
+                        Buttons_EventGroup,   /* The event group being tested. */
+                        BIT_0 | BIT_4, /* The bits within the event group to wait for. */
+                        pdTRUE,        /* BIT_0 & BIT_4 should be cleared before returning. */
+                        pdFALSE,       /* Don't wait for both bits, either bit will do. */
+                        10 );/* Wait a maximum of 10ms for either bit to be set. */
     while(1)
     {
-    xQueueReceive( LCD_Queue, &Value_Received_Button, 0 );
-    if ( Value_Received_Button ==  1)
+    if ((( uxBits & ( BIT_0 )) == ( BIT_0 )) && ((uxBits & ( BIT_4 )) == 0 ))
     {
-    count1++;
-    if (count1 == 9)
-      {
-          count1 = 0;
-      }
     LCD_clear();
     LCD_gotoRowColumn(FirstLine ,0);
     LCD_displayString(Kalam1);
-    LCD_gotoRowColumn(SecondLine ,0);
-    LCD_displayString(Kalam2);
-    LCD_gotoRowColumn(FirstLine , 11);
-    LCD_displayChar(count1 + '0');
-    LCD_gotoRowColumn(SecondLine , 11);
-    LCD_displayChar(count2 + '0');
-    Value_Received_Button = 0 ;
     }
 
-    if(Value_Received_Button ==  2)
+    else if((( uxBits & ( BIT_0 )) == 0 ) && (( uxBits & ( BIT_4 )) == ( BIT_4 )))
     {
-    count2++;
-    if (count2 == 9)
-          {
-              count2 = 0;
-          }
     LCD_clear();
-    LCD_gotoRowColumn(FirstLine ,0);
-    LCD_displayString(Kalam1);
     LCD_gotoRowColumn(SecondLine ,0);
     LCD_displayString(Kalam2);
-    LCD_gotoRowColumn(FirstLine , 11);
-    LCD_displayChar(count1 + '0');
-    LCD_gotoRowColumn(SecondLine , 11);
-    LCD_displayChar(count2 + '0');
-    Value_Received_Button = 0 ;
+    }
+    else
+    {
+
     }
     vTaskDelay(5);
     }

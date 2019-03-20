@@ -44,9 +44,8 @@ int main(void)
     //ROM_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
                        //SYSCTL_OSC_MAIN);
 
-    /*Create A queue For LEDS*/
-    LED_Queue = xQueueCreate( 9 , sizeof( uint8_t) );
-    LCD_Queue = xQueueCreate( 9 , sizeof( uint8_t) );
+    /*Buttons Event Group*/
+    Buttons_EventGroup = xEventGroupCreate();
     /*Create init Task For Switch*/
     xTaskCreate(Switch_init_Task, (const portCHAR *)"switch_Init", 128, NULL, 14 , NULL);
     /*Create init Task For LCD*/
@@ -54,19 +53,14 @@ int main(void)
     /*Create Init Task For Led*/
     xTaskCreate(LEDS_Task_init, (const portCHAR *)"LED_Init", 128, NULL, 15 , NULL);
 
-    /*Buzzer Task*/
-    xTaskCreate(Buzzer_init_Task, (const portCHAR *)"Buzzer_Init", 128, NULL, 13 , NULL);
-    xTaskCreate(Buzzer_Task, (const portCHAR *)"Buzzer", 50, NULL, 6 , NULL);
-
-
      /*add Task 1 for led*/
-     xTaskCreate(LED_Task, (const portCHAR *)"LED1", 50, NULL, 8 , NULL);
+     xTaskCreate(LED_Task, (const portCHAR *)"LEDS_Task", 50, NULL, 5 , NULL);
      /*Create a Task For The Button0*/
-     xTaskCreate(Read_Button0_Task, (const portCHAR *)"Read_Button0", 128, NULL, 5 , NULL);
+     xTaskCreate(Read_Button0_Task, (const portCHAR *)"Read_Button0", 128, NULL, 6 , NULL);
      /*Create a Task For The Button1*/
-     xTaskCreate(Read_Button1_Task, (const portCHAR *)"Read_Button1", 128, NULL, 6 , NULL);
+     xTaskCreate(Read_Button1_Task, (const portCHAR *)"Read_Button1", 128, NULL, 7 , NULL);
      /*Create a Task For The Debouncing*/
-     xTaskCreate(debounce_Task, (const portCHAR *)"Read_Button1", 128, NULL, 8 , NULL);
+     xTaskCreate(debounce_Task, (const portCHAR *)"Debouncing_Task", 128, NULL, 8 , NULL);
      /*Create Task For LCD*/
      xTaskCreate(LCD_Display_Task, (const portCHAR *)"LCD_APP", 128, NULL, 7 , NULL);
      vTaskStartScheduler();
