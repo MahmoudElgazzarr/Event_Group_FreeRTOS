@@ -41,7 +41,7 @@ void LCD_Display_Task()
     count1++;
     if (count1 == 9)
       {
-          count2 = 0;
+          count1 = 0;
       }
     LCD_clear();
     LCD_gotoRowColumn(FirstLine ,0);
@@ -52,6 +52,7 @@ void LCD_Display_Task()
     LCD_displayChar(count1 + '0');
     LCD_gotoRowColumn(SecondLine , 11);
     LCD_displayChar(count2 + '0');
+    Value_Received_Button = 0 ;
     }
 
     if(Value_Received_Button ==  2)
@@ -70,6 +71,7 @@ void LCD_Display_Task()
     LCD_displayChar(count1 + '0');
     LCD_gotoRowColumn(SecondLine , 11);
     LCD_displayChar(count2 + '0');
+    Value_Received_Button = 0 ;
     }
     vTaskDelay(5);
     }
