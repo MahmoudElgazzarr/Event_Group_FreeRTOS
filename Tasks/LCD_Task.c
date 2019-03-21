@@ -15,6 +15,8 @@
 static uint8_t *Kalam1 = "Button 0 Pressed :";
 static uint8_t *Kalam2 = "Button 1 Pressed :";
 static uint8_t *Kalam3 = "Welcome";
+static uint8_t *Kalam4 = "Two Button Pressed";
+static uint8_t *Kalam5 = "No Button Pressed";
 
 void init_LCD_Task()
 {
@@ -39,23 +41,31 @@ void LCD_Display_Task()
                         10 );/* Wait a maximum of 10ms for either bit to be set. */
     while(1)
     {
-    if ((( uxBits & ( BIT_0 )) == ( BIT_0 )) && ((uxBits & ( BIT_4 )) == 0 ))
+    if ((( uxBits & ( BIT_0 )) == ( BIT_0 )) && ((uxBits & ( BIT_4 )) != ( BIT_4 )))
     {
     LCD_clear();
     LCD_gotoRowColumn(FirstLine ,0);
     LCD_displayString(Kalam1);
     }
 
-    else if((( uxBits & ( BIT_0 )) == 0 ) && (( uxBits & ( BIT_4 )) == ( BIT_4 )))
+    else if((( uxBits & ( BIT_0 )) != ( BIT_0 )) && (( uxBits & ( BIT_4 )) == ( BIT_4 )))
     {
     LCD_clear();
     LCD_gotoRowColumn(SecondLine ,0);
     LCD_displayString(Kalam2);
     }
+    else if((( uxBits & ( BIT_0 )) == ( BIT_0 )) && ((uxBits & ( BIT_4 )) == ( BIT_4 )))
+    {
+        LCD_clear();
+        LCD_gotoRowColumn(FirstLine ,0);
+        LCD_displayString(Kalam4);
+    }
     else
     {
-
+        LCD_clear();
+        LCD_gotoRowColumn(FirstLine ,0);
+        LCD_displayString(Kalam5);
     }
-    vTaskDelay(5);
+    vTaskDelay(30);
     }
 }

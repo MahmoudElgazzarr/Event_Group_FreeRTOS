@@ -31,7 +31,7 @@ void LED_Task()
         led1_off();
         led2_off();
     }
-    vTaskDelay(45);
+    vTaskDelay(50);
     }
 }
 void LEDS_Task_init()
